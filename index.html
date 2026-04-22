@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patrimonio GAM — Alcaldía Gustavo A. Madero</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:    #1B3A6B;
+    --rojo:    #8B1A1A;
+    --oro:     #C9A84C;
+    --fondo:   #F4F1EC;
+    --blanco:  #FFFFFF;
+    --texto:   #2C2C2C;
+    --gris:    #6B6B6B;
+    --borde:   #DDD8CE;
+    --hover:   #162F59;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--azul);
+    color: var(--blanco);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .header-brand .escudo {
+    width: 44px;
+    height: 44px;
+    background: var(--oro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .header-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+  .header-brand span {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .72rem;
+    font-weight: 300;
+    letter-spacing: .08em;
+    color: #a8c0e0;
+    text-transform: uppercase;
+  }
+
+  /* BARRA DE BÚSQUEDA */
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap input {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 24px;
+    padding: .42rem 1rem .42rem 2.5rem;
+    color: var(--blanco);
+    font-size: .9rem;
+    width: 240px;
+    outline: none;
+    transition: background .2s, width .3s;
+  }
+  .search-wrap input::placeholder { color: rgba(255,255,255,.55); }
+  .search-wrap input:focus {
+    background: rgba(255,255,255,.2);
+    width: 290px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .6;
+  }
+  #search-results-box {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 340px;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 200;
+  }
+  .sr-item {
+    padding: .7rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f0ece4;
+    transition: background .15s;
+  }
+  .sr-item:last-child { border-bottom: none; }
+  .sr-item:hover { background: #f4f1ec; }
+  .sr-item strong { color: var(--azul); font-size: .85rem; display: block; }
+  .sr-item p { font-size: .8rem; color: var(--gris); margin-top: .15rem; }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--blanco);
+    border-bottom: 3px solid var(--oro);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    padding: .9rem 1.5rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--gris);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: color .2s, border-color .2s;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+  }
+  .nav-btn:hover { color: var(--azul); }
+  .nav-btn.active {
+    color: var(--azul);
+    border-bottom-color: var(--azul);
+  }
+
+  /* ── SECCIONES ── */
+  .seccion { display: none; }
+  .seccion.activa { display: block; }
+
+  /* ── HERO (INICIO) ── */
+  .hero {
+    background: linear-gradient(135deg, #1B3A6B 0%, #2a5298 50%, #8B1A1A 100%);
+    color: var(--blanco);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mexico_City_Skyline_%28cropped%29.jpg/1280px-Mexico_City_Skyline_%28cropped%29.jpg') center/cover no-repeat;
+    opacity: .12;
+  }
+  .hero-content { position: relative; max-width: 780px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--oro);
+    color: var(--azul);
+    padding: .3rem 1rem;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,.85);
+    max-width: 620px;
+    margin: 0 auto 2rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,.2);
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--oro);
+  }
+  .stat .lbl { font-size: .8rem; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .05em; }
+
+  /* Tarjetas de acceso rápido */
+  .quick-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    max-width: 1100px;
+    margin: -2.5rem auto 3rem;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .qcard {
+    background: var(--blanco);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    border-top: 4px solid var(--azul);
+  }
+  .qcard:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.15); }
+  .qcard .icon { font-size: 1.8rem; margin-bottom: .6rem; }
+  .qcard h3 { font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--azul); margin-bottom: .4rem; }
+  .qcard p { font-size: .8rem; color: var(--gris); line-height: 1.5; }
+
+  /* ── CONTENIDO GENERAL ── */
+  .contenido {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+  .sec-header {
+    border-left: 5px solid var(--oro);
+    padding-left: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .sec-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--azul);
+    line-height: 1.25;
+  }
+  .sec-header p {
+    color: var(--gris);
+    font-size: .9rem;
+    margin-top: .4rem;
+  }
+
+  /* ── SECCIÓN 2: VIDEO + TRANSCRIPCIÓN ── */
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    margin-bottom: 2rem;
+  }
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+  .transcripcion-box {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 2rem;
+  }
+  .transcripcion-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--azul);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+  .transcripcion-box p {
+    line-height: 1.8;
+    color: var(--texto);
+    margin-bottom: .9rem;
+    font-size: .95rem;
+  }
+
+  /* ── SECCIÓN 3: ANTES Y DESPUÉS ── */
+  .mapa-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--borde);
+  }
+  .mapa-wrapper iframe { display: block; width: 100%; height: 420px; border: none; }
+
+  .patrimonios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .pat-card {
+    background: var(--blanco);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    border: 1px solid var(--borde);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .pat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,.13); }
+  .pat-card-img {
+    height: 170px;
+    background: linear-gradient(135deg, #1B3A6B, #2a5298);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: rgba(255,255,255,.4);
+    overflow: hidden;
+  }
+  .pat-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .pat-card-body { padding: 1.25rem; }
+  .pat-card-body .num-badge {
+    display: inline-block;
+    background: var(--azul);
+    color: #fff;
+    font-size: .7rem;
+    padding: .15rem .6rem;
+    border-radius: 20px;
+    margin-bottom: .5rem;
+    font-weight: 600;
+  }
+  .pat-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--azul);
+    font-size: 1rem;
+    margin-bottom: .5rem;
+  }
+  .pat-card-body p { font-size: .85rem; color: var(--gris); line-height: 1.6; }
+  /* ── SECCIÓN 4: ARTE TABLE ── */
+  .table-wrap { overflow-x: auto; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+  table { width: 100%; border-collapse: collapse; background: var(--blanco); font-size: .85rem; }
+  thead tr { background: var(--azul); color: var(--blanco); }
+  thead th {
+    padding: .9rem 1rem;
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid #eee; transition: background .15s; }
+  tbody tr:hover { background: #f7f4ee; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: .85rem 1rem; vertical-align: top; line-height: 1.5; }
+  tbody td:first-child {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--azul);
+  }
+  .etapa-badge {
+    display: inline-block;
+    background: #eaf0fb;
+    color: var(--azul);
+    padding: .15rem .55rem;
+    border-radius: 4px;
+    font-size: .75rem;
+    font-weight: 600;
+    margin-bottom: .4rem;
+  }
+  .obras-list { list-style: none; }
+  .obras-list li::before { content: '›'; color: var(--oro); margin-right: .4rem; font-weight: 700; }
+  .obras-list li { font-size: .8rem; line-height: 1.6; color: var(--texto); }
+
+  /* ── SECCIÓN 5: CATÁLOGO ── */
+  .catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .cat-card {
+    background: var(--blanco);
+    border-radius: 10px;
+    padding: 1.25rem;
+    border: 1px solid var(--borde);
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    transition: transform .2s;
+  }
+  .cat-card:hover { transform: translateY(-3px); }
+  .cat-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: .75rem;
+  }
+  .cat-num {
+    background: var(--azul);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+  .cat-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: .95rem;
+    color: var(--azul);
+    line-height: 1.3;
+  }
+  .tipo-tag {
+    display: inline-block;
+    font-size: .7rem;
+    padding: .15rem .55rem;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    margin-right: .3rem;
+  }
+  .tipo-material { background: #e8f0fb; color: #1B3A6B; }
+  .tipo-inmaterial { background: #fde8e8; color: #8B1A1A; }
+  .cat-card p { font-size: .8rem; color: var(--gris); line-height: 1.55; }
+  .cat-epoca {
+    margin-top: .6rem;
+    font-size: .72rem;
+    color: var(--gris);
+    border-top: 1px solid #f0ece4;
+    padding-top: .5rem;
+  }
+  .cat-epoca strong { color: var(--texto); }
+
+  /* Filter pills */
+  .filter-pills {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .pill {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    padding: .3rem .9rem;
+    border-radius: 20px;
+    font-size: .8rem;
+    cursor: pointer;
+    transition: all .15s;
+    font-weight: 600;
+    color: var(--gris);
+  }
+  .pill:hover, .pill.active { background: var(--azul); color: var(--blanco); border-color: var(--azul); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--azul);
+    color: rgba(255,255,255,.7);
+    text-align: center;
+    padding: 2rem;
+    font-size: .82rem;
+    margin-top: 2rem;
+  }
+  footer strong { color: var(--oro); }
+
+  /* ── BACK TO TOP ── */
+  #top-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--azul);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    transition: background .2s;
+  }
+  #top-btn:hover { background: var(--hover); }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--gris);
+  }
+  .no-results .icon { font-size: 3rem; margin-bottom: .75rem; }
+
+  @media (max-width: 600px) {
+    .header-brand span { display: none; }
+    .search-wrap input { width: 160px; }
+    .hero { padding: 3.5rem 1rem 3rem; }
+    .hero-stats { gap: 1.5rem; }
+    .quick-cards { margin-top: -1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="header-brand">
+    <div class="escudo">🏛️</div>
+    <h1>Patrimonio GAM
+      <span>Alcaldía Gustavo A. Madero · CDMX</span>
+    </h1>
+  </div>
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="search-input" placeholder="Buscar en el sitio…" autocomplete="off">
+    <div id="search-results-box"></div>
+  </div>
+</header>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <button class="nav-btn active" onclick="mostrar('inicio',this)">🏠 Inicio</button>
+  <button class="nav-btn" onclick="mostrar('pasado',this)">🦴 El Pasado del Ser Humano en América</button>
+  <button class="nav-btn" onclick="mostrar('antesdespues',this)">📸 Antes y Después</button>
+  <button class="nav-btn" onclick="mostrar('arte',this)">🎨 Arte a Través del Tiempo</button>
+  <button class="nav-btn" onclick="mostrar('catalogo',this)">📋 Catálogo del Patrimonio</button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 1 — INICIO
+══════════════════════════════════════ -->
+<section id="inicio" class="seccion activa">
+  <div class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">Proyecto Escolar · ENP · UNAM</span>
+      <h2>Patrimonio Cultural y Urbano de la Alcaldía Gustavo A. Madero</h2>
+      <p>Un recorrido por la historia, el arte y la identidad de una de las alcaldías más ricas en patrimonio de la Ciudad de México: desde sus raíces prehispánicas hasta su transformación urbana contemporánea.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">25</div><div class="lbl">Patrimonios identificados</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">Montajes fotográficos</div></div>
+        <div class="stat"><div class="num">9</div><div class="lbl">Etapas del arte mexicano</div></div>
+        <div class="stat"><div class="num">3</div><div class="lbl">Tipos de patrimonio</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-cards">
+    <div class="qcard" onclick="mostrar('pasado', document.querySelectorAll('.nav-btn')[1])">
+      <div class="icon">🦴</div>
+      <h3>El Pasado del Ser Humano en América</h3>
+      <p>Desde los primeros pobladores nómadas hasta las grandes civilizaciones mesoamericanas.</p>
+    </div>
+    <div class="qcard" onclick="mostrar('antesdespues', document.querySelectorAll('.nav-btn')[2])">
+      <div class="icon">📸</div>
+      <h3>Antes y Después en la GAM</h3>
+      <p>Montajes fotográficos que muestran la evolución de 6 sitios patrimoniales de la alcaldía.</p>
+    </div>
+    <div class="qcard" onclick="mostrar('arte', document.querySelectorAll('.nav-btn')[3])">
+      <div class="icon">🎨</div>
+      <h3>Arte a Través del Tiempo</h3>
+      <p>Cuadro resumen de la historia del arte mexicano: de la etapa lítica al arte contemporáneo.</p>
+    </div>
+    <div class="qcard" onclick="mostrar('catalogo', document.querySelectorAll('.nav-btn')[4])">
+      <div class="icon">📋</div>
+      <h3>Catálogo del Patrimonio GAM</h3>
+      <p>25 patrimonios identificados con justificación UNESCO, tipo y época histórica.</p>
+    </div>
+  </div>
+
+  <div class="contenido">
+    <div class="sec-header">
+      <h2>Acerca del Proyecto</h2>
+      <p>Escuela Nacional Preparatoria · Montajes Fotográficos del Patrimonio en la Alcaldía Gustavo A. Madero</p>
+    </div>
+    <div style="background:var(--blanco);border-radius:10px;padding:2rem;border:1px solid var(--borde);line-height:1.8;font-size:.95rem;color:var(--texto);">
+      <p style="margin-bottom:1rem;">El <strong>patrimonio cultural y urbano de la Alcaldía Gustavo A. Madero</strong> refleja la historia, el crecimiento y la transformación de la Ciudad de México a lo largo del tiempo. A través de la comparación de imágenes antiguas y actuales, es posible identificar los cambios en la arquitectura, el uso del espacio y la importancia social de distintos lugares.</p>
+      <p style="margin-bottom:1rem;">Este proyecto tiene como objetivo elaborar <strong>montajes fotográficos</strong> que muestren el "antes y después" de algunos patrimonios representativos de esta alcaldía, destacando su evolución histórica y su relevancia en la actualidad.</p>
+      <p>El análisis del "antes y después" permite valorar la importancia de conservar el patrimonio, ya que forma parte de la <strong>identidad histórica de la comunidad</strong> y contribuye al conocimiento de su evolución.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 2 — EL PASADO DEL SER HUMANO EN AMÉRICA
+══════════════════════════════════════ -->
+<section id="pasado" class="seccion">
+  <div class="contenido">
+    <div class="sec-header">
+      <h2>El Pasado del Ser Humano en América</h2>
+      <p>De los primeros cazadores nómadas hasta las grandes civilizaciones y el México independiente</p>
+    </div>
+
+    <div class="video-wrapper" style="margin-bottom:2.5rem;">
+      <iframe src="https://www.youtube.com/embed/DwzhZeJlX0Y" title="El pasado del ser humano en América" allowfullscreen></iframe>
+    </div>
+
+    <div class="transcripcion-box">
+      <h3>📄 Resumen del contenido</h3>
+
+      <p><strong>Los primeros hallazgos:</strong> En Rancho La Amapola, San Luis Potosí, se encontraron caracoles petrificados de hace más de 30,000 años, una de las evidencias más antiguas de México. En Chihuahua se hallaron huellas humanas que muestran cómo los primeros habitantes eran cazadores y recolectores nómadas.</p>
+
+      <p><strong>Periodos Arqueolítico y Cenolítico (30,000–7,000 a.C.):</strong> Los primeros habitantes de México eran nómadas y vivían de la caza, la pesca y la recolección. Usaban herramientas de piedra y se adaptaban a los cambios del clima. Estos periodos marcan el inicio de la población humana en el territorio.</p>
+
+      <p><strong>Hallazgos humanos relevantes:</strong> El Hombre de Balderas vivió hace unos 10,500 años; la Mujer del Peñón tiene más de 12,000 años; la Mujer de Naharon en Tulum vivió hace 13,600 años y es de los restos más antiguos del continente. La Mujer de Las Palmas, de Yucatán, apoya la idea de múltiples migraciones a América. El Sacro de Tequisquiac, tallado hace 7,000 años, es una de las primeras obras artísticas del continente.</p>
+
+      <p><strong>Evolución cultural:</strong> En el protoneolítico comenzaron a cultivar, domesticar animales y vivir en aldeas. En el Preclásico surgieron civilizaciones como la olmeca. En el Clásico, ciudades como Teotihuacán destacaron por su arte y arquitectura. En el Epiclásico hubo guerras y nuevos centros como Xochicalco. En el Postclásico, los mexicas formaron grandes imperios.</p>
+
+      <p><strong>Los Mexicas (Postclásico, 1200–1521 d.C.):</strong> Fundaron Tenochtitlán en 1325 y crearon un gran imperio basado en la guerra, el comercio y la agricultura con chinampas. Su religión era politeísta y rendían culto a dioses como Huitzilopochtli y Tláloc. Con la llegada de los españoles comenzó la conquista y el mestizaje cultural.</p>
+
+      <p><strong>Independencia y México moderno:</strong> Las reformas borbónicas de 1750 generaron descontento. En 1810 comenzó la Guerra de Independencia, concluida en 1821. El siglo XIX fue marcado por inestabilidad entre liberales y conservadores. La Revolución Mexicana (1910–1920) buscó justicia e igualdad. Con la alternancia democrática del año 2000, México vivió una mayor pluralidad política.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 3 — ANTES Y DESPUÉS
+══════════════════════════════════════ -->
+<section id="antesdespues" class="seccion">
+  <div class="contenido">
+    <div class="sec-header">
+      <h2>Antes y Después: Transformación del Patrimonio en la GAM</h2>
+      <p>Montajes fotográficos comparativos de seis sitios históricos de la Alcaldía Gustavo A. Madero</p>
+    </div>
+
+    <div class="mapa-wrapper">
+      <iframe
+        src="https://www.google.com/maps/d/embed?mid=1IZC5N3BO2r0nPJXTWB3-GxeRJyiXvEk"
+        title="Mapa de patrimonios GAM">
+      </iframe>
+    </div>
+    <p style="font-size:.82rem;color:var(--gris);margin-bottom:2rem;text-align:center;">📍 Mapa interactivo con las ubicaciones de los patrimonios en la Alcaldía Gustavo A. Madero</p>
+
+    <div class="patrimonios-grid">
+
+      <!-- 1 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Basilica_de_Guadalupe_2006.jpg/640px-Basilica_de_Guadalupe_2006.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Bas%C3%ADlica_de_Guadalupe_-_2011_%28cropped%29.jpg/640px-Bas%C3%ADlica_de_Guadalupe_-_2011_%28cropped%29.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Nueva_Bas%C3%ADlica_de_Guadalupe.jpg/640px-Nueva_Bas%C3%ADlica_de_Guadalupe.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Basilica_de_Guadalupe%2C_M%C3%A9xico.jpg/640px-Basilica_de_Guadalupe%2C_M%C3%A9xico.jpg"
+               ]'
+               alt="Basílica de Guadalupe">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">01</span>
+          <h3>Basílica de Guadalupe</h3>
+          <p>Uno de los centros religiosos más importantes de México y del mundo. La antigua basílica, construida en el siglo XVII, convivió con la nueva edificada en 1976, creando un contraste entre arquitectura colonial y moderna.</p>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Antigua_basilica_de_guadalupe.jpg/640px-Antigua_basilica_de_guadalupe.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Antigua_Basilica_de_Guadalupe.JPG/640px-Antigua_Basilica_de_Guadalupe.JPG",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Antigua_Bas%C3%ADlica_de_Guadalupe.jpg/640px-Antigua_Bas%C3%ADlica_de_Guadalupe.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/OldBasilicaGuadalupe.jpg/640px-OldBasilicaGuadalupe.jpg"
+               ]'
+               alt="Antigua Basílica de Guadalupe">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">02</span>
+          <h3>Antigua Basílica de Guadalupe</h3>
+          <p>Fue durante muchos años el templo principal dedicado a la Virgen de Guadalupe. Debido al hundimiento del suelo sufrió daños estructurales y hoy se conserva como monumento histórico.</p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Tepeyac_hill.jpg/640px-Tepeyac_hill.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/El_Tepeyac_%282%29.jpg/640px-El_Tepeyac_%282%29.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Cerro_del_Tepeyac.jpg/640px-Cerro_del_Tepeyac.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Cerro_del_Tepeyac_CDMX.jpg/640px-Cerro_del_Tepeyac_CDMX.jpg"
+               ]'
+               alt="Parque Nacional El Tepeyac">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">03</span>
+          <h3>Parque Nacional El Tepeyac</h3>
+          <p>Espacio natural de gran valor histórico y cultural. Pasó de un entorno natural con mínima intervención humana a un parque recreativo con senderos, áreas verdes y servicios para visitantes.</p>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/5/57/Escuela_Nacional_Preparatoria_3.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Escuela_Nacional_Preparatoria_3.jpg/640px-Escuela_Nacional_Preparatoria_3.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Edificio_A_desde_explanada_-_ENP_3.JPG/640px-Edificio_A_desde_explanada_-_ENP_3.JPG",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Escuela_Nacional_Preparatoria_No.3_%22Justo_Sierra%22.jpg/640px-Escuela_Nacional_Preparatoria_No.3_%22Justo_Sierra%22.jpg"
+               ]'
+               alt="ENP 3 Justo Sierra">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">04</span>
+          <h3>ENP 3 "Justo Sierra"</h3>
+          <p>Institución educativa relevante en la alcaldía. De instalaciones limitadas en sus inicios creció considerablemente incorporando nueva tecnología y espacios educativos modernos.</p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/EstacionBuenavista2009.jpg/640px-EstacionBuenavista2009.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Antigua_estaci%C3%B3n_Cuautitl%C3%A1n.JPG/640px-Antigua_estaci%C3%B3n_Cuautitl%C3%A1n.JPG",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Museo_Nacional_de_los_Ferrocarriles_Mexicanos_01.jpg/640px-Museo_Nacional_de_los_Ferrocarriles_Mexicanos_01.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Ferrocarriles_Nacionales_de_Mexico.jpg/640px-Ferrocarriles_Nacionales_de_Mexico.jpg"
+               ]'
+               alt="Antigua Estación de La Villa">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">05</span>
+          <h3>Antigua Estación de La Villa</h3>
+          <p>Fue un punto clave para el transporte ferroviario. Con la modernización dejó de funcionar como estación y hoy se conserva parcialmente como vestigio histórico del crecimiento urbano.</p>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="pat-card">
+        <div class="pat-card-img">
+          <img class="lazy-img"
+               data-srcs='[
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mexico_City_Skyline_%28cropped%29.jpg/640px-Mexico_City_Skyline_%28cropped%29.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Ciudad_de_M%C3%A9xico_-_panoramio_%281%29.jpg/640px-Ciudad_de_M%C3%A9xico_-_panoramio_%281%29.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Gustavo_A._Madero.jpg/640px-Gustavo_A._Madero.jpg",
+                 "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/GAM_Ciudad_de_Mexico.jpg/640px-GAM_Ciudad_de_Mexico.jpg"
+               ]'
+               alt="Colonia Industrial GAM">
+        </div>
+        <div class="pat-card-body">
+          <span class="num-badge">06</span>
+          <h3>Colonia Industrial</h3>
+          <p>Ejemplo claro de transformación urbana. De zona predominantemente fabril con baja densidad evolucionó hacia un uso habitacional y comercial con mayor número de viviendas y negocios.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:2.5rem;background:var(--blanco);border-radius:10px;padding:1.75rem;border:1px solid var(--borde);">
+      <h3 style="font-family:'Playfair Display',serif;color:var(--azul);margin-bottom:.75rem;">Conclusión</h3>
+      <p style="line-height:1.8;font-size:.95rem;">A través de los montajes fotográficos realizados, se pudo observar cómo los espacios de la Alcaldía Gustavo A. Madero han cambiado con el paso del tiempo. Estos cambios no solo reflejan avances en infraestructura y urbanización, sino también transformaciones sociales, económicas y culturales. El análisis del "antes y después" permite valorar la importancia de conservar el patrimonio, ya que forma parte de la <strong>identidad histórica de la comunidad</strong> y contribuye al conocimiento de su evolución.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 4 — ARTE A TRAVÉS DEL TIEMPO
+══════════════════════════════════════ -->
+<section id="arte" class="seccion">
+  <div class="contenido">
+    <div class="sec-header">
+      <h2>Arte a Través del Tiempo: Historia del Arte Mexicano</h2>
+      <p>Cuadro resumen — de la Etapa Lítica al Arte Contemporáneo</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Etapa Histórica</th>
+            <th>Contexto</th>
+            <th>Características</th>
+            <th>Artistas y Obras Destacadas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="etapa-badge">01</span></td>
+            <td>Etapa Lítica</td>
+            <td>Poblamiento temprano; grupos nómadas y recolectores.</td>
+            <td>Arte rupestre y herramientas con intención estética.</td>
+            <td><ul class="obras-list"><li>Puntas Clovis</li><li>Pinturas Rupestres – Sierra de San Francisco</li><li>Cueva de la Pintada</li><li>Petroglifos de Boca de Potrerillos</li><li>Sacro de Tequixquiac</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">02</span></td>
+            <td>Mesoamérica</td>
+            <td>Desarrollo de civilizaciones agrícolas y teocráticas.</td>
+            <td>Arquitectura monumental, escultura religiosa y pintura mural simbólica.</td>
+            <td><ul class="obras-list"><li>Cabeza Colosal No. 1 – Olmeca</li><li>Templo de Kukulkán – Maya</li><li>Coatlicue – Mexica</li><li>Piedra del Sol – Mexica</li><li>Murales de Bonampak – Maya</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">03</span></td>
+            <td>Conquista (S. XVI)</td>
+            <td>Colapso del Imperio Mexica; evangelización.</td>
+            <td>Sincretismo cultural, arte tequitqui y pintura mural en conventos.</td>
+            <td><ul class="obras-list"><li>Murales del Convento de Actopan</li><li>Cruz Atrial de Acolman</li><li>Retablo de Huejotzingo – Jorge de la Cerda</li><li>Códice Florentino – Sahagún</li><li>Códice Mendoza</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">04</span></td>
+            <td>Nueva España</td>
+            <td>Consolidación virreinal y auge del sistema de castas.</td>
+            <td>Esplendor del Barroco, Churrigueresco y pintura religiosa.</td>
+            <td><ul class="obras-list"><li>Miguel Cabrera – Retrato de Sor Juana</li><li>Juan Correa – La Pascua de María</li><li>Cristóbal de Villalpando – La Mujer del Apocalipsis</li><li>Manuel Tolsá – Estatua de Carlos IV</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">05</span></td>
+            <td>Independencia y S. XIX</td>
+            <td>Transición de virreinato a nación; inestabilidad política.</td>
+            <td>Neoclasicismo, Romanticismo y consolidación de la Academia.</td>
+            <td><ul class="obras-list"><li>José María Velasco – El Valle de México</li><li>Hermenegildo Bustos – Autorretrato</li><li>Leandro Izaguirre – El suplicio de Cuauhtémoc</li><li>Juan Cordero – Colón ante los Reyes Católicos</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">06</span></td>
+            <td>República y Porfiriato</td>
+            <td>Modernización bajo la dictadura de Díaz.</td>
+            <td>Afrancesamiento, Modernismo y caricatura política.</td>
+            <td><ul class="obras-list"><li>José Guadalupe Posada – La Catrina</li><li>Julio Ruelas – La Crítica</li><li>Dr. Atl – Paisaje con volcanes</li><li>Adamo Boari – Palacio de Bellas Artes</li><li>Saturnino Herrán – La ofrenda</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">07</span></td>
+            <td>Revolución Mexicana</td>
+            <td>Guerra civil y reconstrucción de la identidad nacional.</td>
+            <td>Muralismo: arte público, social, político y didáctico.</td>
+            <td><ul class="obras-list"><li>Diego Rivera – Sueño de una tarde dominical</li><li>José Clemente Orozco – Prometeo</li><li>David Alfaro Siqueiros – La Nueva Democracia</li><li>Frida Kahlo – Las dos Fridas</li><li>Remedios Varo – Creación de las aves</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">08</span></td>
+            <td>Generación de la Ruptura</td>
+            <td>Oposición al muralismo; búsqueda de libertad creativa.</td>
+            <td>Abstracción, subjetividad y lenguaje artístico universal.</td>
+            <td><ul class="obras-list"><li>José Luis Cuevas – La Giganta</li><li>Manuel Felguérez – Mural de hierro</li><li>Vicente Rojo – México bajo la lluvia</li><li>Gunther Gerzso – Paisaje arcaico</li></ul></td>
+          </tr>
+          <tr>
+            <td><span class="etapa-badge">09</span></td>
+            <td>Arte Contemporáneo</td>
+            <td>Era globalizada, crisis social y experimentación tecnológica.</td>
+            <td>Conceptualismo, instalación, videoarte y crítica institucional.</td>
+            <td><ul class="obras-list"><li>Gabriel Orozco – La DS</li><li>Teresa Margolles – ¿De qué otra cosa podríamos hablar?</li><li>Francisco Toledo – Gráfica y papalotes</li><li>Rafael Lozano-Hemmer – Voz Alta</li><li>Damián Ortega – Cosmic Thing</li></ul></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:1.5rem;background:var(--blanco);border-radius:10px;padding:1.25rem 1.75rem;border:1px solid var(--borde);">
+      <p style="font-size:.82rem;color:var(--gris);line-height:1.7;"><strong>Fuentes:</strong> Instituto de Investigaciones Estéticas – UNAM (2024); INAH – Catálogo Nacional de Monumentos (2023); Toussaint, M. (2012) <em>Arte Colonial en México</em>; Fernández, J. (1990) <em>Arte Mexicano</em>; Manrique, J.A. (2000) <em>Historia del arte mexicano</em>; Secretaría de Cultura – SINAFO (2024).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 5 — CATÁLOGO DEL PATRIMONIO
+══════════════════════════════════════ -->
+<section id="catalogo" class="seccion">
+  <div class="contenido">
+    <div class="sec-header">
+      <h2>Catálogo del Patrimonio Cultural de la GAM</h2>
+      <p>25 patrimonios identificados con clasificación UNESCO · Alcaldía Gustavo A. Madero</p>
+    </div>
+
+    <div class="filter-pills">
+      <button class="pill active" onclick="filtrarCatalogo('todos',this)">Todos (25)</button>
+      <button class="pill" onclick="filtrarCatalogo('material',this)">📦 Material</button>
+      <button class="pill" onclick="filtrarCatalogo('inmaterial',this)">🎭 Inmaterial</button>
+    </div>
+
+    <div class="catalogo-grid" id="catalogo-grid">
+
+      <!-- Los 25 patrimonios -->
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">1</div><h3>Basílica de Guadalupe</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Arquitectura Religiosa. Criterio IV: Conjunto que ilustra periodos clave de la historia (Virreinato y S. XX). Arte: Barroco / Modernismo.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato / S. XX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">2</div><h3>Peregrinación 12 de Dic.</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Actos festivos. Criterio VI: Tradición viva vinculada a la identidad nacional y fe universal.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">3</div><h3>Acueducto de Guadalupe</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Ingeniería Civil. Criterio I: Obra maestra del genio creador en gestión hidráulica del S. XVIII. Arte: Neoclásico.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato (S. XVIII)</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">4</div><h3>Zona Arqueológica Ixhuatepec</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Arqueológico. Criterio III: Testimonio único de las civilizaciones prehispánicas en la cuenca de México. Arte: Prehispánico.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Prehispánica</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">5</div><h3>Santuario San Juan Diego</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Monumento Histórico. Criterio III: Testimonio del proceso de evangelización y sincretismo cultural. Arte: Colonial tardío.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">6</div><h3>Cementerio del Tepeyac</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Funerario. Criterio IV: Conjunto que refleja la estética y jerarquía social del siglo XIX. Arte: Romanticismo.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Siglo XIX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">7</div><h3>Gastronomía del Mercado</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Conocimientos y naturaleza. Criterio V: Tradición que preserva técnicas de cultivo y preparación ancestral.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">8</div><h3>Aduana de Peralvillo</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Arquitectura Civil. Criterio IV: Edificio representativo de la administración económica virreinal. Arte: Barroco sobrio.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato (S. XVIII)</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">9</div><h3>Danza de los Concheros</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Artes del espectáculo. Criterio VI: Expresión ritual que integra creencias prehispánicas y católicas.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Raíz Prehispánica</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">10</div><h3>Museo de los Ferrocarrileros</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Industrial. Criterio IV: Estructura que ilustra el auge tecnológico y económico del Porfiriato. Arte: Arq. Industrial.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Porfiriato</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">11</div><h3>Parque El Tepeyac</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Paisaje Cultural. Criterio VI: Sitio asociado directamente con eventos de importancia histórica universal.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Transhistórico</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">12</div><h3>Reloj Monumental</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Monumento. Criterio I: Obra destacada por su integración artística en el espacio público moderno. Arte: Arte Contemporáneo.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Siglo XX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">13</div><h3>Capilla del Pocito</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Barroco. Criterio I: Obra maestra de Guerrero y Torres por su diseño único de planta circular. Arte: Barroco Estípite.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato (S. XVIII)</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">14</div><h3>Ofrendas de Muertos</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Rituales. Criterio VI: Manifestación que salvaguarda la memoria colectiva y el culto a los ancestros.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">15</div><h3>Iglesia Santiago Atzacoalco</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Arquitectónico. Criterio III: Testimonio de la temprana evangelización en los barrios originarios. Arte: Barroco Novohispano.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">16</div><h3>Templo San Lorenzo</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Monumento Histórico. Criterio IV: Ejemplo de arquitectura del S. XVI que estructuró la comunidad local. Arte: Plateresco.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Virreinato (S. XVI)</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">17</div><h3>Leyendas del Cerro</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Tradición oral. Criterio VI: Narrativas que dan identidad y pertenencia histórica a los habitantes.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">18</div><h3>Plaza de las Américas</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Espacio Urbano. Criterio II: Facilita el intercambio de valores culturales a escala masiva. Arte: Modernismo.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Siglo XX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">19</div><h3>Murales Centro Cultural</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Artístico. Criterio I: Representación del genio creativo que plasma la historia social local. Arte: Muralismo Mexicano.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Siglo XX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">20</div><h3>Feria Gastronómica</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Usos sociales. Criterio V: Ejemplo de interacción humana con la diversidad culinaria regional.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">21</div><h3>Capilla de Indios</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Arquitectura. Criterio III: Testimonio excepcional de la fusión cultural indígena-española. Arte: Indocristiano.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Siglo XVI</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">22</div><h3>Archivo Histórico GAM</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Documental. Criterio III: Conserva testimonios fundamentales para la historia administrativa de la CDMX.</p>
+        <p class="cat-epoca"><strong>Época:</strong> S. XIX al XXI</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">23</div><h3>Música de Banda</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Artes del espectáculo. Criterio VI: Expresión sonora ligada al ciclo ritual de los pueblos originarios.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+      <div class="cat-card" data-tipo="material">
+        <div class="cat-card-header"><div class="cat-num">24</div><h3>Monumento a la Fundación</h3></div>
+        <span class="tipo-tag tipo-material">Material</span>
+        <p>Escultura. Criterio II: Intercambio de valores sobre la identidad nacional y el origen de México. Arte: Neoclásico.</p>
+        <p class="cat-epoca"><strong>Época:</strong> S. XIX / XX</p>
+      </div>
+
+      <div class="cat-card" data-tipo="inmaterial">
+        <div class="cat-card-header"><div class="cat-num">25</div><h3>Semana Santa en Barrios</h3></div>
+        <span class="tipo-tag tipo-inmaterial">Inmaterial</span>
+        <p>Rituales. Criterio VI: Tradición dramática que mantiene la cohesión social de barrios tradicionales.</p>
+        <p class="cat-epoca"><strong>Época:</strong> Contemporánea</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <p><strong>Patrimonio GAM</strong> · Proyecto Escolar ENP · Escuela Nacional Preparatoria · UNAM</p>
+  <p style="margin-top:.4rem;">Galicia Leyva Daniela Raquel &nbsp;·&nbsp; Rodríguez Sánchez Josué Damian</p>
+  <p style="margin-top:.25rem;">Aguilar Tolentino José David &nbsp;·&nbsp; Vázquez Vázquez Claudio &nbsp;·&nbsp; Valadez Cruz Alberto Yael</p>
+  <p style="margin-top:.4rem;font-size:.75rem;opacity:.6;">Alcaldía Gustavo A. Madero · Ciudad de México · 2026</p>
+</footer>
+
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ══════════ SCRIPTS ══════════ -->
+<script>
+  // ── SISTEMA DE IMÁGENES CON MÚLTIPLES FALLBACKS ──
+  function tryImages(img, urls) {
+    if (!urls || urls.length === 0) {
+      img.style.display = 'none';
+      return;
+    }
+    const next = urls[0];
+    const rest = urls.slice(1);
+    img.onerror = function() { tryImages(img, rest); };
+    img.src = next;
+  }
+
+  // Inicializar todas las imágenes con sistema de fallback
+  document.querySelectorAll('.lazy-img').forEach(function(img) {
+    try {
+      const urls = JSON.parse(img.dataset.srcs || '[]');
+      if (urls.length > 0) tryImages(img, urls);
+    } catch(e) { img.style.display = 'none'; }
+  });
+
+  // ── NAVEGACIÓN ──
+  function mostrar(id, btn) {
+    document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('activa');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── BOTÓN ARRIBA ──
+  const topBtn = document.getElementById('top-btn');
+  window.addEventListener('scroll', () => {
+    topBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+
+  // ── FILTRO CATÁLOGO ──
+  function filtrarCatalogo(tipo, pill) {
+    document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    document.querySelectorAll('.cat-card').forEach(card => {
+      if (tipo === 'todos' || card.dataset.tipo === tipo) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // ── BUSCADOR ──
+  const searchInput = document.getElementById('search-input');
+  const resultsBox  = document.getElementById('search-results-box');
+
+  // Índice de búsqueda
+  const searchIndex = [
+    { seccion:'pasado',      btn:1, titulo:'El Pasado del Ser Humano en América',       keywords:'nómadas cazadores recolectores prehispánico azteca mexica independencia caracoles huellas balderas peñón' },
+    { seccion:'antesdespues',btn:2, titulo:'Basílica de Guadalupe',                     keywords:'basílica guadalupe virgen peregrinación colonial 1976 arquitectura religiosa' },
+    { seccion:'antesdespues',btn:2, titulo:'Antigua Basílica de Guadalupe',             keywords:'antigua basílica hundimiento daños estructurales monumento histórico' },
+    { seccion:'antesdespues',btn:2, titulo:'Parque Nacional El Tepeyac',               keywords:'tepeyac parque natural áreas verdes senderos urbanización' },
+    { seccion:'antesdespues',btn:2, titulo:'ENP 3 Justo Sierra',                       keywords:'escuela preparatoria justo sierra educación instalaciones unam enp' },
+    { seccion:'antesdespues',btn:2, titulo:'Antigua Estación de La Villa',             keywords:'estación ferroviario tren transporte villa vestigio histórico' },
+    { seccion:'antesdespues',btn:2, titulo:'Colonia Industrial',                       keywords:'colonia industrial fábricas habitacional comercial urbanización' },
+    { seccion:'arte',        btn:3, titulo:'Etapa Lítica – Arte Rupestre',              keywords:'arte rupestre lítica pinturas cueva petroglifos nómadas' },
+    { seccion:'arte',        btn:3, titulo:'Mesoamérica – Olmecas y Mexicas',          keywords:'olmeca maya mexica teotihuacán coatlicue piedra del sol templo' },
+    { seccion:'arte',        btn:3, titulo:'Muralismo Mexicano',                       keywords:'diego rivera orozco siqueiros frida kahlo mural muralismo revolución' },
+    { seccion:'arte',        btn:3, titulo:'Arte Contemporáneo',                       keywords:'gabriel orozco teresa margolles francisco toledo contemporáneo instalación' },
+    { seccion:'catalogo',    btn:4, titulo:'Capilla del Pocito',                       keywords:'capilla pocito barroco estípite guerrero torres circular virreinato' },
+    { seccion:'catalogo',    btn:4, titulo:'Danza de los Concheros',                   keywords:'concheros danza ritual prehispánico católico inmaterial' },
+    { seccion:'catalogo',    btn:4, titulo:'Gastronomía del Mercado',                  keywords:'gastronomía mercado comida tradición culinaria inmaterial' },
+    { seccion:'catalogo',    btn:4, titulo:'Acueducto de Guadalupe',                   keywords:'acueducto guadalupe ingeniería civil hidráulica neoclásico virreinato' },
+    { seccion:'catalogo',    btn:4, titulo:'Ofrendas de Día de Muertos',               keywords:'ofrenda día muertos altar tradición inmaterial memoria colectiva' },
+    { seccion:'catalogo',    btn:4, titulo:'Archivo Histórico GAM',                    keywords:'archivo histórico documental administración cdmx' },
+  ];
+
+  searchInput.addEventListener('input', function() {
+    const q = this.value.trim().toLowerCase();
+    if (q.length < 2) { resultsBox.style.display = 'none'; return; }
+
+    const found = searchIndex.filter(item =>
+      item.titulo.toLowerCase().includes(q) ||
+      item.keywords.toLowerCase().includes(q)
+    );
+
+    if (!found.length) {
+      resultsBox.innerHTML = '<div class="sr-item"><strong>Sin resultados</strong><p>Intenta con otro término</p></div>';
+    } else {
+      resultsBox.innerHTML = found.map(item => `
+        <div class="sr-item" onclick="irA('${item.seccion}',${item.btn})">
+          <strong>${item.titulo}</strong>
+          <p>Ir a la sección correspondiente →</p>
+        </div>
+      `).join('');
+    }
+    resultsBox.style.display = 'block';
+  });
+
+  function irA(seccion, btnIndex) {
+    const btn = document.querySelectorAll('.nav-btn')[btnIndex];
+    mostrar(seccion, btn);
+    resultsBox.style.display = 'none';
+    searchInput.value = '';
+  }
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) resultsBox.style.display = 'none';
+  });
+</script>
+</body>
+</html>
